@@ -1,18 +1,116 @@
-body { padding: 0; margin: 0 }
-#unity-container { position: absolute }
-#unity-container.unity-desktop { left: 50%; top: 50%; transform: translate(-50%, -50%) }
-#unity-container.unity-mobile { position: fixed; width: 100%; height: 100% }
-.unity-mobile #unity-fullscreen-container { width: 100%; height: 100% }
-#unity-fullscreen-container { position: relative; }
-#unity-canvas { position: absolute; width: 100%; height: 100%; background: #231F20 }
-#unity-loading-container { position: absolute; width: 100%; height: 100%; backdrop-filter: blur(5px); display: none; }
-#unity-loading-bar { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); }
-#unity-logo { width: 154px; height: 130px; background: url('unity-logo-dark.png') no-repeat center }
-#unity-progress-bar-empty { width: 141px; height: 18px; margin-top: 10px; margin-left: 6.5px; background: url('progress-bar-empty-dark.png') no-repeat center }
-#unity-progress-bar-full { width: 0%; height: 18px; margin-top: 10px; background: url('progress-bar-full-dark.png') no-repeat center }
-#unity-footer { position: relative }
-.unity-mobile #unity-footer { display: none }
-#unity-logo-title-footer { float:left; width: 102px; height: 38px; background: url('unity-logo-title-footer.png') no-repeat center }
-#unity-build-title { float: right; margin-right: 10px; line-height: 38px; font-family: arial; font-size: 18px }
-#unity-fullscreen-button { cursor:pointer; float: right; width: 38px; height: 38px; background: url('fullscreen-button.png') no-repeat center }
-#unity-warning { position: absolute; left: 50%; top: 5%; transform: translate(-50%); background: white; padding: 10px; display: none }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #0B0F1E;
+  overscroll-behavior: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* dvh acompanha a barra de endereço do celular aparecendo e sumindo */
+#unity-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: block;
+  background: #0B0F1E;
+  touch-action: none;
+  outline: none;
+}
+
+#carregando {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 0 16px;
+  background: #0B0F1E;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  text-align: center;
+}
+
+#titulo {
+  color: #3CF2C4;
+  font-weight: 700;
+  font-size: clamp(32px, 9vw, 72px);
+  letter-spacing: 0.3em;
+  margin-right: -0.3em; /* compensa o espaçamento da última letra */
+}
+
+#barra {
+  width: min(320px, 70vw);
+  height: 8px;
+  border-radius: 4px;
+  background: #1E2747;
+  overflow: hidden;
+}
+
+#barra-cheia {
+  width: 0;
+  height: 100%;
+  background: #FFD45C;
+  transition: width 0.2s;
+}
+
+#dica {
+  color: #8A93B8;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+}
+
+/* Celular deitado: o jogo é pensado em pé, então pede para girar. */
+#girar {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 16px;
+  background: #0B0F1E;
+  color: #E8ECFF;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 18px;
+  text-align: center;
+}
+
+#girar-icone {
+  width: 36px;
+  height: 64px;
+  border: 4px solid #3CF2C4;
+  border-radius: 8px;
+  animation: girar 1.6s ease-in-out infinite;
+}
+
+@keyframes girar {
+  0%, 30% { transform: rotate(-90deg); }
+  60%, 100% { transform: rotate(0deg); }
+}
+
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 540px) {
+  #girar { display: flex; }
+}
+
+#erro {
+  display: none;
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #FF4F7B;
+  color: #0B0F1E;
+  font-family: system-ui, sans-serif;
+}
